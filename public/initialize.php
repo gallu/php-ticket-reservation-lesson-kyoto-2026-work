@@ -7,6 +7,11 @@ date_default_timezone_set('Asia/Tokyo');
 ob_start();
 session_start();
 
+// 共通ヘッダの出力
+header('X-Frame-Options: DENY');
+header('X-Content-Type-Options: nosniff');
+
+
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 
