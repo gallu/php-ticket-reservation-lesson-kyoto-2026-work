@@ -1,4 +1,6 @@
-<?php // 完了ページの表示
+<?php
+
+// 完了ページの表示
 
 declare(strict_types=1);
 
