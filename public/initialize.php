@@ -26,6 +26,39 @@ $twig = new Environment($loader, [
   // 'strict_variables' => true,
 ]);
 
+// config取得
+function getConfig(): array
+{
+    static $config = null;
+
+    if (null === $config) {
+        $config = require BASEPATH . '/config.php';
+    }
+
+    return $config;
+}
+
+// イベントインスタンス取得
+function getEventInstance(): EventPolicyInterface
+{
+    static $eventObj = null;
+
+    if (null === $eventObj) {
+        //
+        $config = getConfig();
+        $eventConfig = $config['event'];
+        // var_dump($eventConfig);
+        //
+        require_once BASEPATH . '/app/Domain/Validate/' . $eventConfig['email_validator_class'] . '.php';
+        $emailValidator = new $eventConfig['email_validator_class']();
+        //
+        require_once BASEPATH . '/app/Domain/Event/' . $eventConfig['class_name'] . '.php';
+        $eventObj = new $eventConfig['class_name'](emailValidator: $emailValidator);
+    }
+
+    return $eventObj;
+}
+
 // DB接続取得
 function getDbh(): PDO
 {
@@ -34,7 +67,7 @@ function getDbh(): PDO
 
     if (null === $dbh) {
         // DBハンドルの取得
-        $config = require __DIR__ . '/../config.php';
+        $config = getConfig();
         $db_config = $config['db'];
         $dsn = "mysql:dbname={$db_config['database']};host={$db_config['host']};port={$db_config['port']};charset={$db_config['charset']}";
 
