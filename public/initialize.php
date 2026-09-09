@@ -1,5 +1,8 @@
 <?php
 
+// 基準になるディレクトリを定数で指定
+define('BASEPATH', realpath(__DIR__ . '/..'));
+
 // タイムゾーン
 date_default_timezone_set('Asia/Tokyo');
 
@@ -24,7 +27,8 @@ $twig = new Environment($loader, [
 ]);
 
 // DB接続取得
-function getDbh(): PDO {
+function getDbh(): PDO
+{
     // 二重接続を防ぐためstatic変数を使う
     static $dbh = null;
 
